@@ -90,3 +90,14 @@ Components:
     still use all of the normal React features such as event listeners and so on
     on the Plug's children.
 ```
+
+## Related work in the React.js community
+
+I want to give a shout out to Joe Critchley (@joecritchley) who had some great ideas for various outlet/portal implementations.  Here are some links to his various implementations:
+
+* with-outlets.js (https://gist.github.com/joecritch/8755865)
+    * A great example of how to give a parent component more fine-grained control of a components children.
+* Better component transclusion (http://joecritchley.svbtle.com/transclusion-in-react)
+    * A blog post about something similar to with-outlets.js
+* "Portals" in React.js (http://joecritchley.svbtle.com/portals-in-reactjs)
+    * An implementation of outlets similar to React-Outlet which uses DOM injection to transfer children around.
