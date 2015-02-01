@@ -1,0 +1,45 @@
+{
+  "name": "react-outlet",
+  "version": "1.0.0",
+  "description": "Transclusion helpers for React.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/jshint src && ./node_modules/.bin/jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/carlsverre/react-outlet.git"
+  },
+  "keywords": [
+    "react",
+    "component",
+    "react-component",
+    "portal",
+    "outlet",
+    "plug",
+    "transclusion"
+  ],
+  "author": "Carl Sverre",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/carlsverre/react-outlet/issues"
+  },
+  "homepage": "https://github.com/carlsverre/react-outlet",
+  "devDependencies": {
+    "jasmine-core": "^2.1.3",
+    "jest-cli": "^0.2.2",
+    "jshint": "^2.6.0",
+    "react-tools": "^0.12.2"
+  },
+  "dependencies": {
+    "react": "^0.12.2"
+  },
+  "jest": {
+    "testDirectoryName": "spec",
+    "unmockedModulePathPatterns": [
+      "react",
+      "object-assign"
+    ],
+    "scriptPreprocessor": "<rootDir>/.jest-pre.js"
+  }
+}
