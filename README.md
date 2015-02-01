@@ -6,6 +6,26 @@
 npm install react-outlet --save
 ```
 
+React-Outlet provides two components which aid in cross-component transclusion
+for React.js, namely an Outlet and Plug component.
+
+Outlets are tied to Plugs via an outletId property.  There is a 1-1 relationship
+between an Outlet and Plug.
+
+An example use-case is a parent page which contains two panels.  One panel displays a
+child component while the other panel contains a couple of other components.
+Perhaps the parent wants to give the child component the ability to render an
+additional component in the side panel.  Rather than pushing down the entire
+layout into the child (and potentially duplicating a ton of code between
+multiple children), with React-Outlet the parent can simply pass an outletId to
+the child.  The child can then render arbitrary content into the parent's panel
+without loosing control (or causing additional renders).
+
+All of this is done within the React lifecycle and is not async.
+
+This same pattern can be used to build other complex components such as Modals
+or Tooltips.
+
 ## Usage Example
 
 ```
@@ -44,4 +64,29 @@ var Child = React.createClass({
         );
     }
 });
+```
+
+## Component API
+
+```
+Static Methods:
+
+Outlet.new_outlet_id()
+    Generate and return a new outlet id.  Should be passed into Outlet and Plug
+    components as the outletId prop.
+
+Components:
+
+<Outlet outletId={ outlet_id } />
+    Render an outlet somewhere in the React component tree.  By default this
+    will render into an empty <div />.  Any props other than outletId will be
+    passed to the underlying <div /> so the outlet is easily classable.
+
+    The outletId prop ties this Outlet to a Plug.
+
+<Plug outletId={ outlet_id }>{ ... children go here ... }</Plug>
+    When a plug has children the children will appear in the associated Outlet
+    (associated means the outlet has the same outletId as this plug).  You can
+    still use all of the normal React features such as event listeners and so on
+    on the Plug's children.
 ```
