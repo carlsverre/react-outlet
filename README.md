@@ -1,5 +1,7 @@
 # Transclusion helpers for React.js
 
+![Travis.ci test status](https://travis-ci.org/carlsverre/react-outlet.svg)
+
 ```
 npm install react-outlet --save
 ```
