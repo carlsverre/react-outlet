@@ -22,7 +22,7 @@ var Parent = React.createClass({
             <div>
                 <Header>
                     Awesome parent
-                    <Outlet id={ this.state.header_outlet } />
+                    <Outlet outletId={ this.state.header_outlet } />
                 </Header>
                 <Child outlet={ this.state.header_outlet } />
             </div>
@@ -35,7 +35,7 @@ var Child = React.createClass({
         return (
             <div>
                 I am the child
-                <Plug outlet={ this.props.outlet }>
+                <Plug outletId={ this.props.outlet }>
                     I will appear in the header.
                 </Plug>
             </div>
