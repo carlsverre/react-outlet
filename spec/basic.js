@@ -1,12 +1,13 @@
 jest.autoMockOff();
 
-var React = require('react/addons');
-var TestUtils = React.addons.TestUtils;
-
 describe('react-outlet', function() {
+    var React, TestUtils;
     var Outlet, Plug, outlet_registry;
 
     beforeEach(function() {
+        React = require('react/addons');
+        TestUtils = React.addons.TestUtils;
+
         Outlet = require('../src/outlet');
         Plug = require('../src/plug');
         outlet_registry = require('../src/outlet_registry');
