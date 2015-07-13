@@ -30,7 +30,11 @@ var Outlet = React.createClass({
     },
 
     update: function(children) {
-        this.setState({ children: React.createElement('div', this.props, children) });
+        if (children) {
+            this.setState({ children: React.createElement('div', this.props, children) });
+        } else {
+            this.setState({ children: null });
+        }
     },
 
     render: function() {

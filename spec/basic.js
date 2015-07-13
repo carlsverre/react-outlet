@@ -40,10 +40,14 @@ describe('react-outlet', function() {
             var id = Outlet.new_outlet_id();
 
             var PlugWrap = React.createClass({
-                getInitialState: function() { return { content: undefined }; },
+                getInitialState: function() { return { content: undefined, renderPlug: false }; },
 
                 render: function() {
-                    return <Plug outletId={ this.props.outletId }>{ this.state.content }</Plug>;
+                    if (this.state.renderPlug) {
+                        return <Plug outletId={ this.props.outletId }>{ this.state.content }</Plug>;
+                    } else {
+                        return null;
+                    }
                 }
             });
 
@@ -54,13 +58,39 @@ describe('react-outlet', function() {
                 </div>
             );
 
-            var outlet_content = TestUtils.findRenderedDOMComponentWithClass(tree, "outlet-content");
-            expect(outlet_content.getDOMNode().textContent).toBe("");
+            expect(function() {
+                TestUtils.findRenderedDOMComponentWithClass(tree, "outlet-content");
+            }).toThrow();
 
             var plug_wrap = TestUtils.findRenderedComponentWithType(tree, PlugWrap);
+
+            plug_wrap.setState({ renderPlug: true });
+
+            expect(function() {
+                TestUtils.findRenderedDOMComponentWithClass(tree, "outlet-content");
+            }).toThrow();
+
             plug_wrap.setState({ content: "foobar" });
 
+            var outlet_content = TestUtils.findRenderedDOMComponentWithClass(tree, "outlet-content");
+
             expect(outlet_content.getDOMNode().textContent).toBe("foobar");
+
+            plug_wrap.setState({ content: undefined });
+
+            expect(function() {
+                TestUtils.findRenderedDOMComponentWithClass(tree, "outlet-content");
+            }).toThrow();
+
+            plug_wrap.setState({ content: <b>testing</b> });
+            outlet_content = TestUtils.findRenderedDOMComponentWithClass(tree, "outlet-content");
+            expect(outlet_content.getDOMNode().textContent).toBe("testing");
+
+            plug_wrap.setState({ renderPlug: false });
+
+            expect(function() {
+                TestUtils.findRenderedDOMComponentWithClass(tree, "outlet-content");
+            }).toThrow();
         });
 
         it("it receives updates from its associated Plug across React trees", function() {
@@ -75,16 +105,23 @@ describe('react-outlet', function() {
             });
 
             var tree = TestUtils.renderIntoDocument(<PlugWrap outletId={ id } />);
-
             var tree2 = TestUtils.renderIntoDocument(<Outlet outletId={ id } className="outlet-content" />);
 
-            var outlet_content = TestUtils.findRenderedDOMComponentWithClass(tree2, "outlet-content");
-            expect(outlet_content.getDOMNode().textContent).toBe("");
+            expect(function() {
+                TestUtils.findRenderedDOMComponentWithClass(tree2, "outlet-content");
+            }).toThrow();
 
             var plug_wrap = TestUtils.findRenderedComponentWithType(tree, PlugWrap);
-            plug_wrap.setState({ content: "foobar" });
 
+            plug_wrap.setState({ content: "foobar" });
+            var outlet_content = TestUtils.findRenderedDOMComponentWithClass(tree2, "outlet-content");
             expect(outlet_content.getDOMNode().textContent).toBe("foobar");
+
+            plug_wrap.setState({ content: undefined });
+
+            expect(function() {
+                TestUtils.findRenderedDOMComponentWithClass(tree2, "outlet-content");
+            }).toThrow();
         });
 
         it("supports multiple plug/outlet pairs at the same time", function() {
@@ -209,8 +246,7 @@ describe('react-outlet', function() {
 
             expect(TestUtils
                 .findRenderedComponentWithType(outlet_tree_2, Outlet)
-                .getDOMNode()
-                .textContent).toBe("");
+                .getDOMNode()).toBeNull();
 
             // outlet should still exist in the registry
             expect(outlet_registry.outlets.hasOwnProperty(id)).toBeTruthy();
