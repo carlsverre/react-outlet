@@ -3,7 +3,8 @@ var registry = require("./outlet_registry");
 
 var Plug = React.createClass({
     propTypes: {
-        outletId: React.PropTypes.string.isRequired
+        outletId: React.PropTypes.string.isRequired,
+        children: React.PropTypes.node
     },
 
     componentDidMount: function() {

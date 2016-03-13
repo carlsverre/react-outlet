@@ -1,22 +1,26 @@
 jest.autoMockOff();
 
-describe('react-outlet', function() {
-    var React = require('react');
-    var ReactDOM = require('react-dom');
-    var TestUtils = require('react-addons-test-utils');
+describe("react-outlet", function() {
+    var React = require("react");
+    var ReactDOM = require("react-dom");
+    var TestUtils = require("react-addons-test-utils");
 
     var Outlet, Plug, outlet_registry;
 
     var TestDiv = React.createClass({
+        propTypes: {
+            children: React.PropTypes.node
+        },
+
         render: function() {
             return <div>{this.props.children}</div>;
         }
     });
 
     beforeEach(function() {
-        Outlet = require('../src/outlet');
-        Plug = require('../src/plug');
-        outlet_registry = require('../src/outlet_registry');
+        Outlet = require("../src/outlet");
+        Plug = require("../src/plug");
+        outlet_registry = require("../src/outlet_registry");
     });
 
     describe("Outlet", function() {
@@ -36,7 +40,7 @@ describe('react-outlet', function() {
             );
 
             var outlet_content = TestUtils.findRenderedDOMComponentWithClass(tree, "outlet-content");
-            expect(ReactDOM.findDOMNode(outlet_content).textContent).toEqual('winner');
+            expect(ReactDOM.findDOMNode(outlet_content).textContent).toEqual("winner");
 
             var plug = TestUtils.findRenderedComponentWithType(tree, Plug);
             expect(ReactDOM.findDOMNode(plug)).toBeNull();
@@ -46,6 +50,8 @@ describe('react-outlet', function() {
             var id = Outlet.new_outlet_id();
 
             var PlugWrap = React.createClass({
+                propTypes: { outletId: React.PropTypes.string },
+
                 getInitialState: function() { return { content: undefined, renderPlug: false }; },
 
                 render: function() {
@@ -103,6 +109,7 @@ describe('react-outlet', function() {
             var id = Outlet.new_outlet_id();
 
             var PlugWrap = React.createClass({
+                propTypes: { outletId: React.PropTypes.string },
                 getInitialState: function() { return { content: undefined }; },
 
                 render: function() {
@@ -171,7 +178,7 @@ describe('react-outlet', function() {
             var id = Outlet.new_outlet_id();
             var container = document.createElement("div");
 
-            var tree = ReactDOM.render(<Outlet outletId={ id } />, container);
+            ReactDOM.render(<Outlet outletId={ id } />, container);
 
             // ensure that the outlet registered itself
             expect(outlet_registry.outlets.hasOwnProperty(id)).toBeTruthy();
@@ -189,13 +196,13 @@ describe('react-outlet', function() {
             var container2 = document.createElement("div");
 
             // outlet is rendered in one tree
-            var outlet_tree = ReactDOM.render(<Outlet outletId={ id } />, container);
+            ReactDOM.render(<Outlet outletId={ id } />, container);
 
             expect(outlet_registry.outlets.hasOwnProperty(id)).toBeTruthy();
             expect(outlet_registry.outlets[id].hasOwnProperty("callback")).toBeTruthy();
 
             // plug is rendered in another tree
-            var plug_tree = ReactDOM.render(<Plug outletId={ id } />, container2);
+            ReactDOM.render(<Plug outletId={ id } />, container2);
 
             expect(outlet_registry.outlets.hasOwnProperty(id)).toBeTruthy();
             expect(outlet_registry.outlets[id].hasOwnProperty("component")).toBeTruthy();
@@ -225,7 +232,7 @@ describe('react-outlet', function() {
             expect(outlet_registry.outlets[id].hasOwnProperty("callback")).toBeTruthy();
 
             // plug is rendered in another tree
-            var plug_tree = ReactDOM.render(<Plug outletId={ id }>testing</Plug>, container2);
+            ReactDOM.render(<Plug outletId={ id }>testing</Plug>, container2);
 
             expect(outlet_registry.outlets.hasOwnProperty(id)).toBeTruthy();
             expect(outlet_registry.outlets[id].hasOwnProperty("component")).toBeTruthy();
@@ -297,7 +304,7 @@ describe('react-outlet', function() {
             var id = Outlet.new_outlet_id();
             var container = document.createElement("div");
 
-            var tree = ReactDOM.render(<Plug outletId={ id } />, container);
+            ReactDOM.render(<Plug outletId={ id } />, container);
 
             // ensure that the plug registered itself
             expect(outlet_registry.outlets.hasOwnProperty(id)).toBeTruthy();
