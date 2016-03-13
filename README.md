@@ -1,6 +1,6 @@
-# Transclusion helpers for React.js
+# React Outlet [![Travis][travis-badge]][travis] [![npm package][npm-badge]][npm]
 
-[![Travis.ci test status](https://travis-ci.org/carlsverre/react-outlet.svg)](https://travis-ci.org/carlsverre/react-outlet)
+## Transclusion helpers for React.js
 
 ```
 npm install react-outlet --save
@@ -101,3 +101,8 @@ I want to give a shout out to Joe Critchley (@joecritchley) who had some great i
     * A blog post about something similar to with-outlets.js
 * "Portals" in React.js (http://joecritchley.svbtle.com/portals-in-reactjs)
     * An implementation of outlets similar to React-Outlet which uses DOM injection to transfer children around.
+
+[travis-badge]: https://img.shields.io/travis/carlsverre/react-outlet.svg?style=flat-square
+[travis]: https://travis-ci.org/carlsverre/react-outlet
+[npm-badge]: https://img.shields.io/npm/v/react-outlet.svg?style=flat-square
+[npm]: https://www.npmjs.org/package/react-outlet
