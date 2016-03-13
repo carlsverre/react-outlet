@@ -1,6 +1,6 @@
 {
   "name": "react-outlet",
-  "version": "2.0.0",
+  "version": "1.0.3",
   "description": "Transclusion helpers for React.js",
   "main": "index.js",
   "scripts": {
