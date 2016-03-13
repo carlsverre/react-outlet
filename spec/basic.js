@@ -1,13 +1,19 @@
 jest.autoMockOff();
 
 describe('react-outlet', function() {
-    var React, TestUtils;
+    var React = require('react');
+    var ReactDOM = require('react-dom');
+    var TestUtils = require('react-addons-test-utils');
+
     var Outlet, Plug, outlet_registry;
 
-    beforeEach(function() {
-        React = require('react/addons');
-        TestUtils = React.addons.TestUtils;
+    var TestDiv = React.createClass({
+        render: function() {
+            return <div>{this.props.children}</div>;
+        }
+    });
 
+    beforeEach(function() {
         Outlet = require('../src/outlet');
         Plug = require('../src/plug');
         outlet_registry = require('../src/outlet_registry');
@@ -23,17 +29,17 @@ describe('react-outlet', function() {
             var id = Outlet.new_outlet_id();
 
             var tree = TestUtils.renderIntoDocument(
-                <div>
+                <TestDiv>
                     <Outlet outletId={ id } className="outlet-content" />
                     <Plug outletId={ id }>winner</Plug>
-                </div>
+                </TestDiv>
             );
 
             var outlet_content = TestUtils.findRenderedDOMComponentWithClass(tree, "outlet-content");
-            expect(outlet_content.getDOMNode().textContent).toEqual('winner');
-            
+            expect(ReactDOM.findDOMNode(outlet_content).textContent).toEqual('winner');
+
             var plug = TestUtils.findRenderedComponentWithType(tree, Plug);
-            expect(plug.getDOMNode()).toBeNull();
+            expect(ReactDOM.findDOMNode(plug)).toBeNull();
         });
 
         it("it receives updates from its associated Plug", function() {
@@ -52,10 +58,10 @@ describe('react-outlet', function() {
             });
 
             var tree = TestUtils.renderIntoDocument(
-                <div>
+                <TestDiv>
                     <Outlet outletId={ id } className="outlet-content" />
                     <PlugWrap outletId={ id } />
-                </div>
+                </TestDiv>
             );
 
             expect(function() {
@@ -74,7 +80,7 @@ describe('react-outlet', function() {
 
             var outlet_content = TestUtils.findRenderedDOMComponentWithClass(tree, "outlet-content");
 
-            expect(outlet_content.getDOMNode().textContent).toBe("foobar");
+            expect(ReactDOM.findDOMNode(outlet_content).textContent).toBe("foobar");
 
             plug_wrap.setState({ content: undefined });
 
@@ -84,7 +90,7 @@ describe('react-outlet', function() {
 
             plug_wrap.setState({ content: <b>testing</b> });
             outlet_content = TestUtils.findRenderedDOMComponentWithClass(tree, "outlet-content");
-            expect(outlet_content.getDOMNode().textContent).toBe("testing");
+            expect(ReactDOM.findDOMNode(outlet_content).textContent).toBe("testing");
 
             plug_wrap.setState({ renderPlug: false });
 
@@ -115,7 +121,7 @@ describe('react-outlet', function() {
 
             plug_wrap.setState({ content: "foobar" });
             var outlet_content = TestUtils.findRenderedDOMComponentWithClass(tree2, "outlet-content");
-            expect(outlet_content.getDOMNode().textContent).toBe("foobar");
+            expect(ReactDOM.findDOMNode(outlet_content).textContent).toBe("foobar");
 
             plug_wrap.setState({ content: undefined });
 
@@ -129,22 +135,21 @@ describe('react-outlet', function() {
             var id2 = Outlet.new_outlet_id();
 
             var tree = TestUtils.renderIntoDocument(
-                <div>
+                <TestDiv>
                     <Outlet outletId={ id } className="outlet-first" />
                     <Plug outletId={ id }>first</Plug>
                     <Plug outletId={ id2 }>second</Plug>
                     <Outlet outletId={ id2 } className="outlet-second" />
-                </div>
+                </TestDiv>
             );
 
-            expect(TestUtils
-                .findRenderedDOMComponentWithClass(tree, "outlet-first")
-                .getDOMNode()
-                .textContent).toBe("first");
-            expect(TestUtils
-                .findRenderedDOMComponentWithClass(tree, "outlet-second")
-                .getDOMNode()
-                .textContent).toBe("second");
+            expect(ReactDOM.findDOMNode(
+                TestUtils.findRenderedDOMComponentWithClass(tree, "outlet-first")
+            ).textContent).toBe("first");
+
+            expect(ReactDOM.findDOMNode(
+                TestUtils.findRenderedDOMComponentWithClass(tree, "outlet-second")
+            ).textContent).toBe("second");
         });
 
         it("fails to register an outlet for an existing id", function() {
@@ -152,10 +157,10 @@ describe('react-outlet', function() {
 
             var test = function() {
                 TestUtils.renderIntoDocument(
-                    <div>
+                    <TestDiv>
                         <Outlet outletId={ id } />
                         <Outlet outletId={ id } />
-                    </div>
+                    </TestDiv>
                 );
             };
 
@@ -166,13 +171,13 @@ describe('react-outlet', function() {
             var id = Outlet.new_outlet_id();
             var container = document.createElement("div");
 
-            var tree = React.render(<Outlet outletId={ id } />, container);
+            var tree = ReactDOM.render(<Outlet outletId={ id } />, container);
 
             // ensure that the outlet registered itself
             expect(outlet_registry.outlets.hasOwnProperty(id)).toBeTruthy();
 
             // cause the tree to be unmounted
-            expect(React.unmountComponentAtNode(container)).toBeTruthy();
+            expect(ReactDOM.unmountComponentAtNode(container)).toBeTruthy();
 
             // ensure that the outlet unregistered itself
             expect(outlet_registry.outlets.hasOwnProperty(id)).toBeFalsy();
@@ -184,26 +189,26 @@ describe('react-outlet', function() {
             var container2 = document.createElement("div");
 
             // outlet is rendered in one tree
-            var outlet_tree = React.render(<Outlet outletId={ id } />, container);
+            var outlet_tree = ReactDOM.render(<Outlet outletId={ id } />, container);
 
             expect(outlet_registry.outlets.hasOwnProperty(id)).toBeTruthy();
             expect(outlet_registry.outlets[id].hasOwnProperty("callback")).toBeTruthy();
 
             // plug is rendered in another tree
-            var plug_tree = React.render(<Plug outletId={ id } />, container2);
+            var plug_tree = ReactDOM.render(<Plug outletId={ id } />, container2);
 
             expect(outlet_registry.outlets.hasOwnProperty(id)).toBeTruthy();
             expect(outlet_registry.outlets[id].hasOwnProperty("component")).toBeTruthy();
 
             // unmount the outlet
-            expect(React.unmountComponentAtNode(container)).toBeTruthy();
+            expect(ReactDOM.unmountComponentAtNode(container)).toBeTruthy();
 
             // outlet should still exist in the registry
             expect(outlet_registry.outlets.hasOwnProperty(id)).toBeTruthy();
             expect(outlet_registry.outlets[id].hasOwnProperty("component")).toBeTruthy();
             expect(outlet_registry.outlets[id].hasOwnProperty("callback")).toBeFalsy();
 
-            expect(React.unmountComponentAtNode(container2)).toBeTruthy();
+            expect(ReactDOM.unmountComponentAtNode(container2)).toBeTruthy();
 
             expect(outlet_registry.outlets.hasOwnProperty(id)).toBeFalsy();
         });
@@ -214,46 +219,44 @@ describe('react-outlet', function() {
             var container2 = document.createElement("div");
             var container3 = document.createElement("div");
 
-            var outlet_tree = React.render(<Outlet outletId={ id } />, container);
+            var outlet_tree = ReactDOM.render(<Outlet outletId={ id } />, container);
 
             expect(outlet_registry.outlets.hasOwnProperty(id)).toBeTruthy();
             expect(outlet_registry.outlets[id].hasOwnProperty("callback")).toBeTruthy();
 
             // plug is rendered in another tree
-            var plug_tree = React.render(<Plug outletId={ id }>testing</Plug>, container2);
+            var plug_tree = ReactDOM.render(<Plug outletId={ id }>testing</Plug>, container2);
 
             expect(outlet_registry.outlets.hasOwnProperty(id)).toBeTruthy();
             expect(outlet_registry.outlets[id].hasOwnProperty("component")).toBeTruthy();
 
-            expect(TestUtils
-                .findRenderedComponentWithType(outlet_tree, Outlet)
-                .getDOMNode()
-                .textContent).toBe("testing");
+            expect(ReactDOM.findDOMNode(
+                TestUtils.findRenderedComponentWithType(outlet_tree, Outlet)
+            ).textContent).toBe("testing");
 
             // unmount the outlet
-            expect(React.unmountComponentAtNode(container)).toBeTruthy();
+            expect(ReactDOM.unmountComponentAtNode(container)).toBeTruthy();
 
             // mount the outlet in another tree
-            var outlet_tree_2 = React.render(<Outlet outletId={ id } />, container3);
+            var outlet_tree_2 = ReactDOM.render(<Outlet outletId={ id } />, container3);
 
-            expect(TestUtils
-                .findRenderedComponentWithType(outlet_tree_2, Outlet)
-                .getDOMNode()
-                .textContent).toBe("testing");
+            expect(ReactDOM.findDOMNode(
+                TestUtils.findRenderedComponentWithType(outlet_tree_2, Outlet)
+            ).textContent).toBe("testing");
 
             // unmount the plug
-            expect(React.unmountComponentAtNode(container2)).toBeTruthy();
+            expect(ReactDOM.unmountComponentAtNode(container2)).toBeTruthy();
 
-            expect(TestUtils
-                .findRenderedComponentWithType(outlet_tree_2, Outlet)
-                .getDOMNode()).toBeNull();
+            expect(ReactDOM.findDOMNode(
+                TestUtils.findRenderedComponentWithType(outlet_tree_2, Outlet)
+            )).toBeNull();
 
             // outlet should still exist in the registry
             expect(outlet_registry.outlets.hasOwnProperty(id)).toBeTruthy();
             expect(outlet_registry.outlets[id].hasOwnProperty("callback")).toBeTruthy();
             expect(outlet_registry.outlets[id].hasOwnProperty("component")).toBeFalsy();
 
-            expect(React.unmountComponentAtNode(container3)).toBeTruthy();
+            expect(ReactDOM.unmountComponentAtNode(container3)).toBeTruthy();
 
             expect(outlet_registry.outlets.hasOwnProperty(id)).toBeFalsy();
         });
@@ -268,7 +271,7 @@ describe('react-outlet', function() {
             );
 
             var plug = TestUtils.findRenderedComponentWithType(tree, Plug);
-            expect(plug.getDOMNode()).toBeNull();
+            expect(ReactDOM.findDOMNode(plug)).toBeNull();
         });
 
         it("saves its children for later outlet renders", function() {
@@ -279,29 +282,28 @@ describe('react-outlet', function() {
             );
 
             var plug = TestUtils.findRenderedComponentWithType(tree, Plug);
-            expect(plug.getDOMNode()).toBeNull();
+            expect(ReactDOM.findDOMNode(plug)).toBeNull();
 
             var tree2 = TestUtils.renderIntoDocument(
                 <Outlet outletId={ id } className="tardy-outlet" />
             );
 
-            expect(TestUtils
-                .findRenderedDOMComponentWithClass(tree2, "tardy-outlet")
-                .getDOMNode()
-                .textContent).toBe("foobar");
+            expect(ReactDOM.findDOMNode(
+                TestUtils.findRenderedDOMComponentWithClass(tree2, "tardy-outlet")
+            ).textContent).toBe("foobar");
         });
 
         it("cleans up after itself", function() {
             var id = Outlet.new_outlet_id();
             var container = document.createElement("div");
 
-            var tree = React.render(<Plug outletId={ id } />, container);
+            var tree = ReactDOM.render(<Plug outletId={ id } />, container);
 
             // ensure that the plug registered itself
             expect(outlet_registry.outlets.hasOwnProperty(id)).toBeTruthy();
 
             // cause the tree to be unmounted
-            expect(React.unmountComponentAtNode(container)).toBeTruthy();
+            expect(ReactDOM.unmountComponentAtNode(container)).toBeTruthy();
 
             // ensure that the plug unregistered itself
             expect(outlet_registry.outlets.hasOwnProperty(id)).toBeFalsy();
