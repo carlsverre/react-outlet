@@ -1,19 +1,23 @@
+2016-03-12 Version 1.0.4
+
+    * Support working with React 15*
+
 2016-03-12 Version 1.0.3
 
-	* Cleaned up tests
+    * Cleaned up tests
     * Tested against React 14.x
     * More anal linting
 
 2015-07-13 Version 1.0.2
 
-	* If a plug is either not mounted or has falsey children, the outlet should
-	  render as null
+    * If a plug is either not mounted or has falsey children, the outlet should
+      render as null
 
 2015-02-01 Version 1.0.1
 
-	* Tested with React 0.13.x
-	* Switched to using peer dependencies
+    * Tested with React 0.13.x
+    * Switched to using peer dependencies
 
 2015-02-01 Version 1.0.0
 
-	* Initial release of React-outlet
+    * Initial release of React-outlet
