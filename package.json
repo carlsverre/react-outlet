@@ -40,8 +40,8 @@
     "react-dom": "^0"
   },
   "peerDependencies": {
-    "react": "^0",
-    "react-dom": "^0"
+    "react": "^0 || ^15.0.0-rc.1",
+    "react-dom": "^0 || ^15.0.0-rc.1"
   },
   "jest": {
     "testDirectoryName": "spec",
