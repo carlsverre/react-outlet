@@ -267,6 +267,19 @@ describe("react-outlet", function() {
 
             expect(outlet_registry.outlets.hasOwnProperty(id)).toBeFalsy();
         });
+
+        it("supports clearing all outlets from the registry", function() {
+            var id = Outlet.new_outlet_id();
+            TestUtils.renderIntoDocument(
+                <TestDiv>
+                    <Outlet outletId={ id } className="outlet-content" />
+                </TestDiv>
+            );
+            expect(outlet_registry.outlets.hasOwnProperty(id)).toBeTruthy();
+            Outlet.rewind();
+            expect(Object.keys(outlet_registry.outlets).length).toEqual(0);
+        });
+
     });
 
     describe("Plug", function() {
