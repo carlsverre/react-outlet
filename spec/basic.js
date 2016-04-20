@@ -277,6 +277,7 @@ describe("react-outlet", function() {
             );
             expect(outlet_registry.outlets.hasOwnProperty(id)).toBeTruthy();
             Outlet.rewind();
+            expect(outlet_registry.outlets != null && typeof outlet_registry.outlets === "object" && !Array.isArray(outlet_registry.outlets)).toBeTruthy();
             expect(Object.keys(outlet_registry.outlets).length).toEqual(0);
         });
 
