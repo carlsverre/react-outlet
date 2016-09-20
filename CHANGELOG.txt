@@ -1,3 +1,8 @@
+2016-09-19 Version 1.0.5
+
+    * Added Outlet.reset() for easier server-side usage
+      * Contributed by adamastern
+
 2016-03-12 Version 1.0.4
 
     * Support working with React 15*
