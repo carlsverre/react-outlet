@@ -28,7 +28,7 @@ or Tooltips.
 
 ## Usage Example
 
-```
+```jsx
 var Outlet = require("react-outlet").Outlet;
 var Plug = require("react-outlet").Plug;
 
@@ -68,7 +68,7 @@ var Child = React.createClass({
 
 ## Component API
 
-```
+```html
 Static Methods:
 
 Outlet.new_outlet_id()
