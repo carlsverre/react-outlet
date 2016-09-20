@@ -59,4 +59,8 @@ OutletRegistry.prototype.update = function(outlet_id, component) {
     }
 };
 
+OutletRegistry.prototype.rewind = function(){
+    this.outlets = {};
+};
+
 module.exports = new OutletRegistry();
