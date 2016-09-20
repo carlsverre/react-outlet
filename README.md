@@ -74,6 +74,9 @@ Static Methods:
 Outlet.new_outlet_id()
     Generate and return a new outlet id.  Should be passed into Outlet and Plug
     components as the outletId prop.
+    
+Outlet.reset()
+    Reset the Outlet's registry.  This was added for server-side React usage.
 
 Components:
 
