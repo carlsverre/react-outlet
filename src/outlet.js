@@ -4,7 +4,7 @@ var registry = require("./outlet_registry");
 var Outlet = React.createClass({
     statics: {
         new_outlet_id: registry.generate_id.bind(registry),
-        rewind: registry.rewind.bind(registry)
+        reset: registry.reset.bind(registry)
     },
 
     propTypes: {
