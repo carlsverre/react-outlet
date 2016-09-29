@@ -32,7 +32,9 @@ var Outlet = React.createClass({
 
     update: function(children) {
         if (children) {
-            this.setState({ children: React.createElement("div", this.props, children) });
+            var props = Object.assign({}, this.props);
+            delete props.outletId;
+            this.setState({ children: React.createElement("div", props, children) });
         } else {
             this.setState({ children: null });
         }
