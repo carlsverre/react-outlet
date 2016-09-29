@@ -1,3 +1,8 @@
+2016-09-29 Version 1.0.6
+
+    * Don't send invalid props to the <Outlet>'s <div>
+      * Contributed by KenLSM
+
 2016-09-19 Version 1.0.5
 
     * Added Outlet.reset() for easier server-side usage
