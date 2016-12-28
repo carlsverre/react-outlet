@@ -8,10 +8,10 @@ var Plug = React.createClass({
     },
 
     componentDidMount: function() {
-        this.send_children(this.props.children || null);
+        this.send_children(this.props.children || undefined);
     },
     componentWillReceiveProps: function(next_props) {
-        this.send_children(next_props.children || null);
+        this.send_children(next_props.children || undefined);
     },
 
     // on dismount we send null children to reset the outlet

@@ -21,7 +21,7 @@ var Outlet = React.createClass({
 
     componentWillReceiveProps: function(next_props) {
         if (this.props.outletId !== next_props.outletId) {
-            registry.unregister(this.props.outletId);
+            registry.unregister_outlet(this.props.outletId);
             registry.register(next_props.outletId, this.update);
         }
     },
