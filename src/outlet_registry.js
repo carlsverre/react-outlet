@@ -20,7 +20,7 @@ OutletRegistry.prototype.register = function(outlet_id, callback) {
     var outlet = this.outlets[outlet_id];
     outlet.callback = callback;
     if (outlet.hasOwnProperty("component")) {
-        // the plug got there first, do an initial update
+        // the plug registered first, do an initial update
         outlet.callback(outlet.component);
     }
 };
@@ -57,6 +57,13 @@ OutletRegistry.prototype.update = function(outlet_id, component) {
     if (outlet.hasOwnProperty("callback")) {
         outlet.callback(component);
     }
+};
+
+OutletRegistry.prototype.is_occupied = function(outlet_id) {
+    if (this.outlets.hasOwnProperty(outlet_id)) {
+        return this.outlets[outlet_id].component !== undefined;
+    }
+    return false;
 };
 
 OutletRegistry.prototype.reset = function(){

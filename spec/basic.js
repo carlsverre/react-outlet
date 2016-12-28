@@ -1,3 +1,5 @@
+/* eslint react/no-find-dom-node: 0, react/no-render-return-value: 0 */
+
 jest.autoMockOff();
 
 describe("react-outlet", function() {
@@ -32,12 +34,16 @@ describe("react-outlet", function() {
         it("receives children from its associated Plug", function() {
             var id = Outlet.new_outlet_id();
 
+            expect(outlet_registry.is_occupied(id)).toBeFalsy();
+
             var tree = TestUtils.renderIntoDocument(
                 <TestDiv>
                     <Outlet outletId={ id } className="outlet-content" />
                     <Plug outletId={ id }>winner</Plug>
                 </TestDiv>
             );
+
+            expect(outlet_registry.is_occupied(id)).toBeTruthy();
 
             var outlet_content = TestUtils.findRenderedDOMComponentWithClass(tree, "outlet-content");
             expect(ReactDOM.findDOMNode(outlet_content).textContent).toEqual("winner");
@@ -70,6 +76,8 @@ describe("react-outlet", function() {
                 </TestDiv>
             );
 
+            expect(outlet_registry.is_occupied(id)).toBeFalsy();
+
             expect(function() {
                 TestUtils.findRenderedDOMComponentWithClass(tree, "outlet-content");
             }).toThrow();
@@ -78,17 +86,23 @@ describe("react-outlet", function() {
 
             plug_wrap.setState({ renderPlug: true });
 
+            expect(outlet_registry.is_occupied(id)).toBeFalsy();
+
             expect(function() {
                 TestUtils.findRenderedDOMComponentWithClass(tree, "outlet-content");
             }).toThrow();
 
             plug_wrap.setState({ content: "foobar" });
 
+            expect(outlet_registry.is_occupied(id)).toBeTruthy();
+
             var outlet_content = TestUtils.findRenderedDOMComponentWithClass(tree, "outlet-content");
 
             expect(ReactDOM.findDOMNode(outlet_content).textContent).toBe("foobar");
 
             plug_wrap.setState({ content: undefined });
+
+            expect(outlet_registry.is_occupied(id)).toBeFalsy();
 
             expect(function() {
                 TestUtils.findRenderedDOMComponentWithClass(tree, "outlet-content");
@@ -98,7 +112,11 @@ describe("react-outlet", function() {
             outlet_content = TestUtils.findRenderedDOMComponentWithClass(tree, "outlet-content");
             expect(ReactDOM.findDOMNode(outlet_content).textContent).toBe("testing");
 
+            expect(outlet_registry.is_occupied(id)).toBeTruthy();
+
             plug_wrap.setState({ renderPlug: false });
+
+            expect(outlet_registry.is_occupied(id)).toBeFalsy();
 
             expect(function() {
                 TestUtils.findRenderedDOMComponentWithClass(tree, "outlet-content");
@@ -284,6 +302,25 @@ describe("react-outlet", function() {
             expect(Object.keys(outlet_registry.outlets).length).toEqual(0);
         });
 
+        it("supports changing its outlet id", function() {
+            var id = Outlet.new_outlet_id();
+            var id2 = Outlet.new_outlet_id();
+
+            var container = document.createElement("div");
+            ReactDOM.render(<Outlet outletId={ id } />, container);
+
+            expect(outlet_registry.outlets.hasOwnProperty(id)).toBeTruthy();
+            expect(outlet_registry.outlets[id].hasOwnProperty("callback")).toBeTruthy();
+
+            ReactDOM.render(<Outlet outletId={ id2 } />, container);
+
+            // id has been removed
+            expect(outlet_registry.outlets.hasOwnProperty(id)).toBeFalsy();
+
+            // ...and has been replaced with id2
+            expect(outlet_registry.outlets.hasOwnProperty(id2)).toBeTruthy();
+            expect(outlet_registry.outlets[id2].hasOwnProperty("callback")).toBeTruthy();
+        });
     });
 
     describe("Plug", function() {

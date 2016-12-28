@@ -1,3 +1,9 @@
+2016-12-28 Version 1.0.7
+
+    * Fixed typo when an Outlet id changes
+    * Added "is_occupied" function to the outlet_registry to check to see if a
+      particular outlet id is currently occupied.
+
 2016-09-29 Version 1.0.6
 
     * Don't send invalid props to the <Outlet>'s <div>
