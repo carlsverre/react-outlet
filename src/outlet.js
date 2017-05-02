@@ -1,5 +1,6 @@
 var React = require("react");
 var registry = require("./outlet_registry");
+var PropTypes = require("prop-types");
 
 var Outlet = React.createClass({
     statics: {
@@ -8,7 +9,7 @@ var Outlet = React.createClass({
     },
 
     propTypes: {
-        outletId: React.PropTypes.string.isRequired
+        outletId: PropTypes.string.isRequired
     },
 
     getInitialState: function() {

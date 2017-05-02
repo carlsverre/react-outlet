@@ -49,5 +49,8 @@
       "react",
       "object-assign"
     ]
+  },
+  "dependencies": {
+    "prop-types": "^15.5.8"
   }
 }
