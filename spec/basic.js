@@ -6,12 +6,13 @@ describe("react-outlet", function() {
     var React = require("react");
     var ReactDOM = require("react-dom");
     var TestUtils = require("react-addons-test-utils");
+    var PropTypes = require("prop-types");
 
     var Outlet, Plug, outlet_registry;
 
     var TestDiv = React.createClass({
         propTypes: {
-            children: React.PropTypes.node
+            children: PropTypes.node
         },
 
         render: function() {
@@ -56,7 +57,7 @@ describe("react-outlet", function() {
             var id = Outlet.new_outlet_id();
 
             var PlugWrap = React.createClass({
-                propTypes: { outletId: React.PropTypes.string },
+                propTypes: { outletId: PropTypes.string },
 
                 getInitialState: function() { return { content: undefined, renderPlug: false }; },
 
@@ -127,7 +128,7 @@ describe("react-outlet", function() {
             var id = Outlet.new_outlet_id();
 
             var PlugWrap = React.createClass({
-                propTypes: { outletId: React.PropTypes.string },
+                propTypes: { outletId: PropTypes.string },
                 getInitialState: function() { return { content: undefined }; },
 
                 render: function() {
