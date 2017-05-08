@@ -1,8 +1,8 @@
-var React = require("react");
 var registry = require("./outlet_registry");
 var PropTypes = require("prop-types");
+var createReactClass = require("create-react-class");
 
-var Plug = React.createClass({
+var Plug = createReactClass({
     propTypes: {
         outletId: PropTypes.string.isRequired,
         children: PropTypes.node
