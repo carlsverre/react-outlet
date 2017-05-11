@@ -1,3 +1,8 @@
+2017-05-11 Version 1.0.9
+
+    * Use the create-react-class package rather than React.createClass for forwards compat
+        * Contributed by davidgomes
+
 2017-05-06 Version 1.0.8
 
     * Use the new prop-types package rather than React.PropTypes for forwards compat
