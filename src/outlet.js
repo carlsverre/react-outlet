@@ -1,8 +1,9 @@
 var React = require("react");
 var registry = require("./outlet_registry");
 var PropTypes = require("prop-types");
+var createReactClass = require("create-react-class");
 
-var Outlet = React.createClass({
+var Outlet = createReactClass({
     statics: {
         new_outlet_id: registry.generate_id.bind(registry),
         reset: registry.reset.bind(registry)

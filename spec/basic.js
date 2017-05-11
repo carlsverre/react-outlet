@@ -7,10 +7,11 @@ describe("react-outlet", function() {
     var ReactDOM = require("react-dom");
     var TestUtils = require("react-addons-test-utils");
     var PropTypes = require("prop-types");
+    var createReactClass = require("create-react-class");
 
     var Outlet, Plug, outlet_registry;
 
-    var TestDiv = React.createClass({
+    var TestDiv = createReactClass({
         propTypes: {
             children: PropTypes.node
         },
@@ -56,7 +57,7 @@ describe("react-outlet", function() {
         it("it receives updates from its associated Plug", function() {
             var id = Outlet.new_outlet_id();
 
-            var PlugWrap = React.createClass({
+            var PlugWrap = createReactClass({
                 propTypes: { outletId: PropTypes.string },
 
                 getInitialState: function() { return { content: undefined, renderPlug: false }; },
@@ -127,7 +128,7 @@ describe("react-outlet", function() {
         it("it receives updates from its associated Plug across React trees", function() {
             var id = Outlet.new_outlet_id();
 
-            var PlugWrap = React.createClass({
+            var PlugWrap = createReactClass({
                 propTypes: { outletId: PropTypes.string },
                 getInitialState: function() { return { content: undefined }; },
 
