@@ -1,3 +1,11 @@
+# Archived
+
+This package has been archived since React now has a built-in transclusion helper named Portals.  You can learn more about how to use them here: https://reactjs.org/docs/portals.html
+
+It's not 100% drop-in, however certainly less janky than the solution presented in this repo.
+
+---
+
 # React Outlet [![Travis][travis-badge]][travis] [![npm package][npm-badge]][npm]
 
 ## Transclusion helpers for React.js
